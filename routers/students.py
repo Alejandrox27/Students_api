@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status
 from db.client import db_client
-from models.students import Student, Student_grades
+from models.students import Student, Student_grades, Student_passed
 from schemas.students import students_schema, student_schema
 from bson import ObjectId
 from pymongo import ReturnDocument
@@ -33,6 +33,18 @@ async def update_grades(student: Student_grades):
         return student_schema((db_client.students.find_one_and_update({"_id": ObjectId(student.dict(exclude_unset=True)["id"])}, 
                                             {"$set": student_dict},
                                             return_document=ReturnDocument.AFTER)))
+    except:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="student not found")
+    
+@router.patch("/v1/update-passed", response_model=dict, status_code=status.HTTP_200_OK)
+async def update_passed(student: Student_passed):
+    student_dict = student.dict(exclude_unset=True)
+    del student_dict["id"]
+    
+    try:
+        return student_schema(db_client.students.find_one_and_update({"_id": ObjectId(student.id)},
+                                        {"$set": student_dict},
+                                        return_document=ReturnDocument.AFTER))
     except:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="student not found")
     

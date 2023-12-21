@@ -11,3 +11,7 @@ class Student(BaseModel):
 class Student_grades(BaseModel):
     id: str
     grades: list[int]
+    
+class Student_passed(BaseModel):
+    id: str
+    passed: str

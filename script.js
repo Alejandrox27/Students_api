@@ -44,8 +44,12 @@ async function addStudentToDatabase(role, name, age){
     clone.querySelector("#age").textContent = age;
 
     const buttonDelete = clone.querySelector(".delete-student");
-    buttonDelete.addEventListener("click", deleteStudent, false)
+    buttonDelete.addEventListener("click", deleteStudent, false);
     buttonDelete.id = object.id;
+
+    const buttonPass = clone.querySelector(".pass");
+    buttonPass.addEventListener("click", passStudent, false);
+    buttonPass.id = object.id;
 
     students.appendChild(clone);
 }
@@ -187,6 +191,10 @@ function deleteStudent(buttonDelete){
     student.parentNode.removeChild(student);
 
     deleteInDatabase(1,buttonDelete)
+}
+
+function passStudent(buttonPass){
+    const id = buttonPass.id;
 }
 
 async function deleteInDatabase(role,buttonDelete) {
