@@ -1,5 +1,6 @@
 from fastapi import FastAPI, APIRouter, status
 from fastapi.middleware.cors import CORSMiddleware
+from routers import students
 
 app = FastAPI(title="main",
               description="API students",
@@ -24,3 +25,5 @@ app.add_middleware(
 async def root():
     return {"status": status.HTTP_200_OK,
             "msg": "ok"}
+
+app.include_router(students.router)
