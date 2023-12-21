@@ -9,7 +9,7 @@
 </head>
 <body>
     <main class="container">
-        <h1>connection api teachers and students</h1>
+        <h1>Add teacher / student</h1>
         <form id="form">
             <select id="select" name="select" class="input input-inner">
                 <option value="teacher">Teacher</option>
@@ -60,19 +60,24 @@
 
                     <li class="student-li">
                         <div class="student">
-                            <div class="pass-fail">
-                                <h3>Name</h3><p><span>Passed</span></p>
+                            <div class="student-pass-fail-sub">
+                                <div class="pass-fail">
+                                    <h3>Name</h3><p><span>Passed</span></p>
+                                </div>
+                                <p>Student</p>
+                                <p>Grades: </p>
+                                <p>Age</p>
                             </div>
-                            <p>Student</p>
-                            <p>Grades: </p>
-                            <p>Age</p>
                             <div class="buttons">
-                                <button id="delete-student">Delete</button>
-                                <button id="add-grade">Add</button>
-                                <button id="pass">Pass</button>
-                                <button id="fail">Fail</button>
+                                <div class="pass-fail-buttons">
+                                    <button id="pass">Pass</button>
+                                    <button id="fail">Fail</button>
+                                </div>
+                                <div class="buttons-del-add">
+                                    <button id="delete-student">Delete</button>
+                                    <button id="add-grade">Add</button>
+                                </div>
                             </div>
-                            
                         </div>
                     </li>
 
@@ -83,7 +88,6 @@
                 <h2>Teachers</h2>
                 <ul class="teachers">
 
-                    <template id="teacher-template">
                         <li class="teacher-li">
                             <div class="teacher">
                                 <h3>Name</h3>
@@ -93,7 +97,6 @@
                                 <button id="delete-teacher">Delete</button>
                             </div>
                         </li>
-                    </template>
 
                 </ul>
             </div>

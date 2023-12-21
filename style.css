@@ -57,7 +57,7 @@ h2{
         font-weight: 400;
         font-size: 20px;
         margin: 4px 0;
-        width: 180px;
+        width: 150px;
         padding: 8px 0px;
         background: #fff;
         border: 0.1em solid #116DFF;
@@ -86,6 +86,7 @@ h2{
     grid-template-columns: repeat(2, 1fr);
     gap: 3em;
     margin-top: 20px;
+    margin-right: 35px;
 }
 
 /*########################################################3*/
@@ -152,17 +153,28 @@ h2{
         font-weight: 300;
     }
 
+    .buttons{
+        display: flex;
+        flex-direction: row;
+    }
+
+    .buttons-del-add{
+        margin-top: 18px;
+        margin-left: 4px;
+    }
+
     .student #delete-student{
         background: #f72f2f;
         display: inline-block;
         color: #FFF;
-        padding: 15px 50px;
-        margin-top: 20px;
+        padding: 15px 42px;
+        margin-top: 2px;
         border-radius: 5px;
         font-family: "Montserrat", sans-serif;
         font-size: 15px;
         cursor: pointer;
         transition: background-color 0.2s ease, border-radius 0.2s ease-in-out;
+        width: 135px;
     }
 
     .student #add-grade{
@@ -170,12 +182,13 @@ h2{
         display: inline-block;
         color: #FFF;
         padding: 15px 50px;
-        margin-top: 20px;
+        margin-top: 2px;
         border-radius: 5px;
         font-family: "Montserrat", sans-serif;
         font-size: 15px;
         cursor: pointer;
         transition: background-color 0.2s ease, border-radius 0.2s ease-in-out;
+        width: 135px;
     }
 
     .student #pass{
@@ -189,6 +202,7 @@ h2{
         font-size: 15px;
         cursor: pointer;
         transition: background-color 0.2s ease, border-radius 0.2s ease-in-out;
+        width: 135px;
     }
 
     .student #fail{
@@ -202,12 +216,7 @@ h2{
         font-size: 15px;
         cursor: pointer;
         transition: background-color 0.2s ease, border-radius 0.2s ease-in-out;
-    }
-
-    .buttons{
-        display: grid;
-        grid-template-columns: repeat(4,1fr);
-        gap: 10px;
+        width: 135px;
     }
 
     .student #delete-student:hover{
@@ -294,3 +303,43 @@ h2{
             border-radius: 200px;
             background: #971010;
         }
+
+@media (max-width: 1280px){
+    .buttons{
+        flex-direction: column;
+    }
+
+    .buttons-del-add{
+        margin-top: 2px;
+        margin-left: 0px;
+    }
+
+    .student{
+        height: fit-content;
+    }
+}
+
+@media (max-width: 667px){
+    h1{
+        font-size: 25px;
+    }
+
+    h2{
+        font-size: 20px;
+    }
+
+    h3{
+        font-size: 17px;
+    }
+
+    .sub-container{
+        grid-template-columns: repeat(1, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 307px){
+    .student #fail{
+        margin-top: 4px;
+    }
+}
