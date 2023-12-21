@@ -10,6 +10,50 @@
 <body>
     <main class="container">
         <h1>connection api teachers and students</h1>
+        <form id="form">
+            <select id="select" name="select" class="input">
+                <option value="teacher">Teacher</option>
+                <option value="student">Student</option>
+            </select>
+
+            <input
+            type="text",
+            placeholder="Name",
+            id="age",
+            name="name"
+            minlength="3",
+            maxlength="10",
+            class="input",
+            required/>
+
+            <input
+            type="number",
+            placeholder="Age",
+            id="age",
+            name="age",
+            min="10",
+            max="75",
+            class="input",
+            required/>
+
+            <input
+            type="text",
+            placeholder="Subject",
+            id="subject",
+            name="subject",
+            class="input",
+            required/>
+
+            <input
+            type="int",
+            placeholder="Grade",
+            id="grade",
+            name="grade",
+            class="input hide",
+            required/>
+
+            <button type="submit" id="button-add">Add</button>
+        </form>
     </main>
 </body>
 </html>
