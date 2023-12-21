@@ -10,7 +10,7 @@
 <body>
     <main class="container">
         <h1>Add teacher / student</h1>
-        <form id="form">
+        <form id="form" novalidate>
             <select id="select" name="select" class="input input-inner">
                 <option value="teacher">Teacher</option>
                 <option value="student">Student</option>
@@ -27,6 +27,7 @@
                 autocomplete="off"
                 required
             />
+            <p id="alertName" class="hide">Not valid name</p>
         
             <input
                 type="number"
@@ -39,6 +40,8 @@
                 autocomplete="off"
                 required
             />
+
+            <p id="alertNum" class="hide">Not valid age</p>
         
             <input
                 type="text"
@@ -67,7 +70,7 @@
                                     </div>
                                     <p>Student</p>
                                     <p>Grades: </p>
-                                    <p>Age</p>
+                                    <p id="age">Age</p>
                                 </div>
                                 <div class="buttons">
                                     <div class="pass-fail-buttons">
@@ -94,8 +97,8 @@
                             <div class="teacher">
                                 <h3>Name</h3>
                                 <p>Teacher</p>
-                                <p>Area</p>
-                                <p>Age</p>
+                                <p id="area">Area</p>
+                                <p id="age">Age</p>
                                 <button id="delete-teacher">Delete</button>
                             </div>
                         </li>

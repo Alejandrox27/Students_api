@@ -7,6 +7,10 @@
     background: none;
 }
 
+p{
+    font-family: "Montserrat", sans-serif;
+}
+
 
 h1{
     font-family: "Montserrat", sans-serif;
@@ -305,6 +309,16 @@ h2{
             border-radius: 200px;
             background: #971010;
         }
+
+    #alertName{
+        color: #e72315;
+        margin-bottom: 2px;
+    }
+
+    #alertNum{
+        color: #e72315;
+        margin-bottom: 2px;
+    }
 
 @media (max-width: 1280px){
     .buttons{
