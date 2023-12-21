@@ -5,4 +5,4 @@ def student_schema(student) -> dict:
             "grades": student["grades"]}
 
 def students_schema(students) -> list:
-    return [user_schema(student) for student in students]
+    return [student_schema(student) for student in students]
