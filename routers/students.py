@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, status
 from db.client import db_client
 from models.students import Student, Student_grades
-from schemas.students import users_schema, user_schema
+from schemas.students import students_schema, student_schema
 from bson import ObjectId
 from pymongo import ReturnDocument
 
@@ -11,7 +11,7 @@ router = APIRouter(prefix="/students",
 
 @router.get("/v1/get_students", response_model=list[Student], status_code=status.HTTP_200_OK)
 async def get_students():
-    return users_schema(db_client.students.find())
+    return students_schema(db_client.students.find())
 
 @router.post("/v1/post_student", response_model=Student, status_code=status.HTTP_201_CREATED)
 async def post_student(student: Student):
@@ -22,7 +22,7 @@ async def post_student(student: Student):
     
     student = db_client.students.find_one({"_id": ObjectId(id)})
     
-    return user_schema(student)
+    return student_schema(student)
 
 @router.patch("/v1/update_grades", response_model=dict, status_code=status.HTTP_200_OK)
 async def update_grades(student: Student_grades):
@@ -30,7 +30,7 @@ async def update_grades(student: Student_grades):
     del student_dict["id"]
     
     try:
-        return user_schema((db_client.students.find_one_and_update({"_id": ObjectId(student.dict(exclude_unset=True)["id"])}, 
+        return student_schema((db_client.students.find_one_and_update({"_id": ObjectId(student.dict(exclude_unset=True)["id"])}, 
                                             {"$set": student_dict},
                                             return_document=ReturnDocument.AFTER)))
     except:
