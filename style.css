@@ -98,6 +98,7 @@ h2{
 
     .student-li{
         list-style: none;
+        margin-bottom: 10px;
     }
     
     .student{
@@ -247,6 +248,7 @@ h2{
 
         .teacher-li{
             list-style: none;
+            margin-bottom: 10px;
         }
         
         .teacher{
