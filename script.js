@@ -112,6 +112,10 @@ const showData = () => {
         clone.querySelector("#age").textContent = element.age;
         clone.querySelector("#grades").textContent += element.grades.join(", ");
 
+        const buttonDelete = clone.querySelector(".delete-student");
+        buttonDelete.addEventListener("click", deleteStudent, false);
+        buttonDelete.id = element.id;
+
         students.appendChild(clone);
     });
 
@@ -136,18 +140,32 @@ function deleteTeacher(buttonDelete){
     const teacher = buttonDelete.target.parentNode.parentNode;
     teacher.parentNode.removeChild(teacher);
 
-    deleteInDatabase(buttonDelete)
-
-
+    deleteInDatabase(0, buttonDelete)
 }
 
-async function deleteInDatabase(buttonDelete) {
-    await fetch(`http://127.0.0.1:8000/teachers/v1/delete_teacher?id=${buttonDelete.target.id}`, {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-        }
-    })
+function deleteStudent(buttonDelete){
+    const student = buttonDelete.target.parentNode.parentNode.parentNode.parentNode;
+    student.parentNode.removeChild(student);
+
+    deleteInDatabase(1,buttonDelete)
+}
+
+async function deleteInDatabase(role,buttonDelete) {
+    if(role === 0){
+        await fetch(`http://127.0.0.1:8000/teachers/v1/delete_teacher?id=${buttonDelete.target.id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+    } else if (role === 1){
+        await fetch(`http://127.0.0.1:8000/students/v1/delete-student?id=${buttonDelete.target.id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+    }
 }
 
 window.addEventListener("load", loaded, false);
