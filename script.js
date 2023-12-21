@@ -1,3 +1,5 @@
+const select = document.getElementById("select");
+
 async function loaded(){
     await fetch("http://127.0.0.1:8000/students/v1/get-students")
         .then(res => res.json())

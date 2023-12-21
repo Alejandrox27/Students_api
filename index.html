@@ -58,28 +58,30 @@
                 <h2>Students</h2>
                 <ul class="students">
 
-                    <li class="student-li">
-                        <div class="student">
-                            <div class="student-pass-fail-sub">
-                                <div class="pass-fail">
-                                    <h3>Name</h3><p><span>Passed</span></p>
+                    <template id="student-template">
+                        <li class="student-li">
+                            <div class="student">
+                                <div class="student-pass-fail-sub">
+                                    <div class="pass-fail">
+                                        <h3>Name</h3><p><span>Passed</span></p>
+                                    </div>
+                                    <p>Student</p>
+                                    <p>Grades: </p>
+                                    <p>Age</p>
                                 </div>
-                                <p>Student</p>
-                                <p>Grades: </p>
-                                <p>Age</p>
+                                <div class="buttons">
+                                    <div class="pass-fail-buttons">
+                                        <button id="pass">Pass</button>
+                                        <button id="fail">Fail</button>
+                                    </div>
+                                    <div class="buttons-del-add">
+                                        <button id="delete-student">Delete</button>
+                                        <button id="add-grade">Add</button>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="buttons">
-                                <div class="pass-fail-buttons">
-                                    <button id="pass">Pass</button>
-                                    <button id="fail">Fail</button>
-                                </div>
-                                <div class="buttons-del-add">
-                                    <button id="delete-student">Delete</button>
-                                    <button id="add-grade">Add</button>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
+                        </li>
+                    </template>
 
                 </ul>
             </div>
@@ -87,7 +89,7 @@
             <div class="teachers-container">
                 <h2>Teachers</h2>
                 <ul class="teachers">
-
+                    <template id="teacher-template">
                         <li class="teacher-li">
                             <div class="teacher">
                                 <h3>Name</h3>
@@ -97,6 +99,7 @@
                                 <button id="delete-teacher">Delete</button>
                             </div>
                         </li>
+                    </template>
 
                 </ul>
             </div>
