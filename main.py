@@ -1,6 +1,6 @@
 from fastapi import FastAPI, APIRouter, status
 from fastapi.middleware.cors import CORSMiddleware
-from routers import students
+from routers import students, teachers
 
 app = FastAPI(title="main",
               description="API students",
@@ -27,3 +27,4 @@ async def root():
             "msg": "ok"}
 
 app.include_router(students.router)
+app.include_router(teachers.router)
