@@ -5,3 +5,8 @@ class Student(BaseModel):
     name: str
     age: int
     grades: list[int]
+    
+    
+class Student_grades(BaseModel):
+    id: str
+    grades: list[int]

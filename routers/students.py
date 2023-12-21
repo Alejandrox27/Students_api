@@ -1,8 +1,9 @@
 from fastapi import APIRouter, HTTPException, status
 from db.client import db_client
-from models.students import Student
+from models.students import Student, Student_grades
 from schemas.students import users_schema, user_schema
 from bson import ObjectId
+from pymongo import ReturnDocument
 
 router = APIRouter(prefix="/students",
                    tags=["students"],
@@ -23,6 +24,11 @@ async def post_student(student: Student):
     
     return user_schema(student)
 
-@router.patch("/v1/update_grades", response_model=Student, status_code=status.HTTP_200_OK)
-async def update_grades():
-    pass
+@router.patch("/v1/update_grades", status_code=status.HTTP_200_OK)
+async def update_grades(student: Student_grades):
+    student_dict = student.dict(exclude_unset=True)
+    del student_dict["id"]
+    
+    return user_schema((db_client.students.find_one_and_update({"_id": ObjectId(student.dict(exclude_unset=True)["id"])}, 
+                                            {"$set": student_dict},
+                                            return_document=ReturnDocument.AFTER)))
