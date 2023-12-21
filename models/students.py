@@ -5,6 +5,7 @@ class Student(BaseModel):
     name: str
     age: int
     grades: list[int]
+    passed: str
     
     
 class Student_grades(BaseModel):

@@ -8,31 +8,12 @@ async function loaded(){
         const age = document.getElementById("age").value;
 
         if (role.selectedIndex === 1){
-            const students = document.getElementsByClassName("students")[0];
-            const template = document.getElementById("student-template");
-            const clone = template.content.firstElementChild.cloneNode(true);
+            addStudentToDatabase(role, name, age)
 
-            clone.querySelector(".pass-fail h3").textContent = name;
-            clone.querySelector("#age").textContent = age;
-
-            students.appendChild(clone);
-
-            addInDatabase(role.selectedIndex, name, age);
 
         } else {
-            const subject = document.getElementById("subject").value;
+            addTeacherToDatabase(role, name, age)
 
-            const teachers = document.getElementsByClassName("teachers")[0];
-            const template = document.getElementById("teacher-template");
-            const clone = template.content.firstElementChild.cloneNode(true);
-
-            clone.querySelector(".teacher h3").textContent = name;
-            clone.querySelector(".teacher #area").textContent = subject;
-            clone.querySelector(".teacher #age").textContent = age;
-
-            teachers.appendChild(clone);
-
-            addInDatabase(role.selectedIndex, name, age, subject);
         }
 
     }, false);
@@ -52,6 +33,43 @@ async function loaded(){
 
 }
 
+async function addStudentToDatabase(role, name, age){
+    const object = await addInDatabase(role.selectedIndex, name, age);
+
+    const students = document.getElementsByClassName("students")[0];
+    const template = document.getElementById("student-template");
+    const clone = template.content.firstElementChild.cloneNode(true);
+
+    clone.querySelector(".pass-fail h3").textContent = name;
+    clone.querySelector("#age").textContent = age;
+
+    const buttonDelete = clone.querySelector(".delete-student");
+    buttonDelete.addEventListener("click", deleteStudent, false)
+    buttonDelete.id = object.id;
+
+    students.appendChild(clone);
+}
+
+async function addTeacherToDatabase(role, name, age){
+    const subject = document.getElementById("subject").value;
+
+    const teachers = document.getElementsByClassName("teachers")[0];
+    const template = document.getElementById("teacher-template");
+    const clone = template.content.firstElementChild.cloneNode(true);
+
+    const object = await addInDatabase(role.selectedIndex, name, age, subject);
+
+    clone.querySelector(".teacher h3").textContent = name;
+    clone.querySelector(".teacher #area").textContent = subject;
+    clone.querySelector(".teacher #age").textContent = age;
+
+    const buttonDelete = clone.querySelector(".delete-teacher");
+    buttonDelete.addEventListener("click", deleteTeacher, false);
+    buttonDelete.id = object.id;
+
+    teachers.appendChild(clone);
+}
+
 async function addInDatabase(role, name, age, subject = "Math"){
     if (role === 1) {
 
@@ -59,16 +77,24 @@ async function addInDatabase(role, name, age, subject = "Math"){
             "id": "",
             "name": name,
             "age": age,
-            "grades": []
+            "grades": [],
+            "passed": "passed"
         }
 
-        await fetch("http://127.0.0.1:8000/students/v1/post-student", {
+        const response = await fetch("http://127.0.0.1:8000/students/v1/post-student", {
         method: "POST",
         body: JSON.stringify(data),
         headers: {
             "Content-Type": "application/json",
         },
-    })
+    });
+    if (!response.ok) {
+        throw new Error("Network response was not ok.");
+    }
+
+    const responseData = await response.json(); 
+    
+    return responseData;
 
     } else {
         const data = {
@@ -78,14 +104,22 @@ async function addInDatabase(role, name, age, subject = "Math"){
             "subject": subject
         }
 
-        await fetch("http://127.0.0.1:8000/teachers/v1/post-teacher", {
+        const response = await fetch("http://127.0.0.1:8000/teachers/v1/post-teacher", {
             method: "POST",
             body: JSON.stringify(data),
             headers: {
                 "Content-Type": "application/json"
             },
-        })
+        });
+        if (!response.ok) {
+            throw new Error("Network response was not ok.");
+        }
+    
+        const responseData = await response.json();
+
+        return responseData;
     }
+
 
 }
 
@@ -115,6 +149,11 @@ const showData = () => {
         const buttonDelete = clone.querySelector(".delete-student");
         buttonDelete.addEventListener("click", deleteStudent, false);
         buttonDelete.id = element.id;
+
+        const buttonPass = clone.querySelector(".pass");
+        buttonPass.addEventListener("click", (e) => {
+            return;
+        }, false);
 
         students.appendChild(clone);
     });

@@ -182,7 +182,7 @@ h2{
         width: 135px;
     }
 
-    .student #add-grade{
+    .student .add-grade{
         background: #2044a7;
         display: inline-block;
         color: #FFF;
@@ -196,7 +196,7 @@ h2{
         width: 135px;
     }
 
-    .student #pass{
+    .student .pass{
         background: #18aa25;
         display: inline-block;
         color: #FFF;
@@ -210,7 +210,7 @@ h2{
         width: 135px;
     }
 
-    .student #fail{
+    .student .fail{
         background: #c2271c;
         display: inline-block;
         color: #FFF;
@@ -229,17 +229,17 @@ h2{
         background: #971010;
     }
 
-    .student #add-grade:hover{
+    .student .add-grade:hover{
         border-radius: 200px;
         background: #091070;
     }
 
-    .student #pass:hover{
+    .student .pass:hover{
         border-radius: 200px;
         background: #08691d;
     }
 
-    .student #fail:hover{
+    .student .fail:hover{
         border-radius: 200px;
         background: #971010;
     }
