@@ -54,10 +54,38 @@
         </form>
 
         <section class="sub-container">
+            <div class="students-container">
+                <h2>Students</h2>
+                <ul class="students">
 
-            <div class="students"></div>
+                    <li class="student-li">
+                        <div class="student">
 
-            <div class="teachers"></div>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+
+            <div class="teachers-container">
+                <h2>Teachers</h2>
+                <ul class="teachers">
+
+                    <template id="teacher-template">
+                        <li class="teacher-li">
+                            <div class="teacher">
+                                <h3>Name</h3>
+                                <p>Role</p>
+                                <p>Area</p>
+                                <p>Age</p>
+                                <button id="delete-teacher">Delete</button>
+                            </div>
+                        </li>
+                    </template>
+
+                </ul>
+            </div>
+
         </section>
     </main>
 </body>
