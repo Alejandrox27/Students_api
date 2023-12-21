@@ -168,7 +168,7 @@ h2{
         margin-left: 4px;
     }
 
-    .student #delete-student{
+    .student .delete-student{
         background: #f72f2f;
         display: inline-block;
         color: #FFF;
@@ -224,7 +224,7 @@ h2{
         width: 135px;
     }
 
-    .student #delete-student:hover{
+    .student .delete-student:hover{
         border-radius: 200px;
         background: #971010;
     }
@@ -292,7 +292,7 @@ h2{
             font-weight: 300;
         }
 
-        .teacher #delete-teacher{
+        .teacher .delete-teacher{
             background: #f72f2f;
             display: inline-block;
             color: #FFF;
@@ -305,7 +305,7 @@ h2{
             transition: background-color 0.2s ease, border-radius 0.2s ease-in-out;
         }
 
-        .teacher #delete-teacher:hover{
+        .teacher .delete-teacher:hover{
             border-radius: 200px;
             background: #971010;
         }
@@ -349,8 +349,8 @@ h2{
     }
 
     .sub-container{
-        grid-template-columns: repeat(1, 1fr);
-        grid-template-rows: repeat(2, 1fr);
+        display: flex;
+        flex-direction: column;
     }
 }
 

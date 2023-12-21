@@ -34,6 +34,7 @@ async function loaded(){
 
             addInDatabase(role.selectedIndex, name, age, subject);
         }
+
     }, false);
 
     await fetch("http://127.0.0.1:8000/students/v1/get-students")
@@ -45,6 +46,10 @@ async function loaded(){
         .then(res => res.json())
         .then(data => localStorage.setItem("Teachers", JSON.stringify(data)))
         .catch((e) => console.log("no data on localStorage"))
+
+
+    showData()
+
 }
 
 async function addInDatabase(role, name, age, subject = "Math"){
@@ -92,6 +97,57 @@ const select_func = (event) => {
         input.classList.remove("hide");
     }
     input.toggleAttribute("required");
+}
+
+const showData = () => {
+    const students_data = JSON.parse(localStorage.getItem("Students"));
+    const teachers_data = JSON.parse(localStorage.getItem("Teachers"));
+
+    students_data.forEach(element => {
+        const students = document.getElementsByClassName("students")[0];
+        const template = document.getElementById("student-template");
+        const clone = template.content.firstElementChild.cloneNode(true);
+
+        clone.querySelector(".pass-fail h3").textContent = element.name;
+        clone.querySelector("#age").textContent = element.age;
+        clone.querySelector("#grades").textContent += element.grades.join(", ");
+
+        students.appendChild(clone);
+    });
+
+    teachers_data.forEach(element => {
+        const teachers = document.getElementsByClassName("teachers")[0];
+        const template = document.getElementById("teacher-template");
+        const clone = template.content.firstElementChild.cloneNode(true);
+
+        clone.querySelector(".teacher h3").textContent = element.name;
+        clone.querySelector(".teacher #area").textContent = element.subject;
+        clone.querySelector(".teacher #age").textContent = element.age;
+
+        const buttonDelete = clone.querySelector(".delete-teacher");
+        buttonDelete.addEventListener("click", deleteTeacher, false);
+        buttonDelete.id = element.id;
+
+        teachers.appendChild(clone);
+    })
+}
+
+function deleteTeacher(buttonDelete){
+    const teacher = buttonDelete.target.parentNode.parentNode;
+    teacher.parentNode.removeChild(teacher);
+
+    deleteInDatabase(buttonDelete)
+
+
+}
+
+async function deleteInDatabase(buttonDelete) {
+    await fetch(`http://127.0.0.1:8000/teachers/v1/delete_teacher?id=${buttonDelete.target.id}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
 }
 
 window.addEventListener("load", loaded, false);
