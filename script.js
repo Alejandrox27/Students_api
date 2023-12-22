@@ -154,8 +154,8 @@ function deleteStudent(buttonDelete){
 
 async function passStudent(buttonPass){
     const body_t = {
-        "id": buttonPass.target.id,
-        "passed": "passed"
+        "id": buttonPass.target.dataset.uid,
+        "passed": true
     }
     await fetch("http://127.0.0.1:8000/students/v1/update-passed", {
         method: "PATCH",
@@ -164,24 +164,16 @@ async function passStudent(buttonPass){
             "Content-Type": "application/json",
         }
     })
-
-    const parent = buttonPass.target.parentNode.parentNode.parentNode;
-    const span = parent.querySelector(".pass-fail p span");
-    const h3 = parent.querySelector("h3");
-    span.textContent = "Passed";
-    span.style.background = "#18AA25";
-    h3.style.color = "#18AA25";
-
-    buttonPass.target.disabled = true;
-
-    const buttonFail = parent.querySelector(".buttons .pass-fail-buttons .fail");
-    buttonFail.disabled = false;
+    
+    const student = students.filter(item => item.uid === body_t.id);
+    student.setStatus = true;
+    Person.showPersonUI(students, "Students");
 }
 
 async function failStudent(buttonFail){
     const body_t = {
-        "id": buttonFail.target.id,
-        "passed": "failed"
+        "id": buttonFail.target.dataset.uid,
+        "passed": false
     };
     await fetch("http://127.0.0.1:8000/students/v1/update-passed", {
         method: "PATCH",
@@ -191,30 +183,22 @@ async function failStudent(buttonFail){
         }
     });
 
-    const parent = buttonFail.target.parentNode.parentNode.parentNode;
-    const span = parent.querySelector(".pass-fail p span");
-    const h3 = parent.querySelector("h3");
-    span.textContent = "Failed";
-    span.style.background = "#c2271c";
-    h3.style.color = "#c2271c";
-
-    buttonFail.target.disabled = true;
-
-    const buttonPass = parent.querySelector(".buttons .pass-fail-buttons .pass");
-    buttonPass.disabled = false;
+    const student = students.filter(item => item.uid === body_t.id);
+    student.setStatus = false;
+    Person.showPersonUI(students, "Students");
 
 }
 
 async function deleteInDatabase(role, buttonDelete) {
     if(role === 0){
-        await fetch(`http://127.0.0.1:8000/teachers/v1/delete_teacher?id=${buttonDelete.target.id}`, {
+        await fetch(`http://127.0.0.1:8000/teachers/v1/delete_teacher?id=${buttonDelete.target.dataset.uid}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
             }
         })
     } else if (role === 1){
-        await fetch(`http://127.0.0.1:8000/students/v1/delete-student?id=${buttonDelete.target.id}`, {
+        await fetch(`http://127.0.0.1:8000/students/v1/delete-student?id=${buttonDelete.target.dataset.uid}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -294,15 +278,15 @@ class Student extends Person {
 
         const buttonDelete = clone.querySelector(".delete-student");
         buttonDelete.addEventListener("click", deleteStudent, false);
-        buttonDelete.id = this.uid;
+        buttonDelete.dataset.uid = this.uid;
 
         const buttonPass = clone.querySelector(".pass");
-        buttonPass.id = this.uid;
+        buttonPass.dataset.uid = this.uid;
         buttonPass.addEventListener("click", passStudent, false);
         buttonPass.disabled = this.#passed;
 
         const buttonFail = clone.querySelector(".fail");
-        buttonFail.id = this.uid;
+        buttonFail.dataset.uid = this.uid;
         buttonFail.addEventListener("click", failStudent, false);
         buttonFail.disabled = !this.#passed;
 
@@ -327,7 +311,7 @@ class Teacher extends Person {
 
         const buttonDelete = clone.querySelector(".delete-teacher");
         buttonDelete.addEventListener("click", deleteTeacher, false);
-        buttonDelete.id = this.uid;
+        buttonDelete.dataset.uid = this.uid;
 
         return clone;
     }
