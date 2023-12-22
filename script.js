@@ -1,3 +1,6 @@
+const students = [];
+const teachers = [];
+
 async function loaded(){
     document.getElementById("select").addEventListener("change", select_func, false);
     document.getElementById("form").addEventListener("submit", (e) => {
@@ -147,31 +150,12 @@ const showData = () => {
     const teachers_data = JSON.parse(localStorage.getItem("Teachers"));
 
     students_data.forEach(element => {
-        const students = document.getElementsByClassName("students")[0];
-        const template = document.getElementById("student-template");
-        const clone = template.content.firstElementChild.cloneNode(true);
-
-        clone.querySelector(".pass-fail h3").textContent = element.name;
-        clone.querySelector("#age").textContent = element.age;
-        clone.querySelector("#grades").textContent += element.grades.join(", ");
-
-        const buttonDelete = clone.querySelector(".delete-student");
-        buttonDelete.addEventListener("click", deleteStudent, false);
-        buttonDelete.id = element.id;
-
-        const buttonPass = clone.querySelector(".pass");
-        buttonPass.id = element.id;
-        buttonPass.addEventListener("click", passStudent, false);
-        buttonPass.disabled = true;
-
-        const buttonFail = clone.querySelector(".fail");
-        buttonFail.id = element.id;
-        buttonFail.addEventListener("click", failStudent, false);
-
-        students.appendChild(clone);
+        students.push(new Student(element.name, element.age, element.id, element.grades, element.passed))
     });
 
-    teachers_data.forEach(element => {
+    Person.showPersonUI(students, "Students");
+
+    /*teachers_data.forEach(element => {
         const teachers = document.getElementsByClassName("teachers")[0];
         const template = document.getElementById("teacher-template");
         const clone = template.content.firstElementChild.cloneNode(true);
@@ -185,7 +169,7 @@ const showData = () => {
         buttonDelete.id = element.id;
 
         teachers.appendChild(clone);
-    })
+    })*/
 }
 
 function deleteTeacher(buttonDelete){
@@ -274,16 +258,83 @@ async function deleteInDatabase(role,buttonDelete) {
 }
 
 class Person{
-    constructor(name, age){
+    constructor(name, age, uid){
         this.name = name;
         this.age = age;
+        this.uid = uid;
+    }
+
+    static showPersonUI(persons, tipe){
+        if (tipe === "Students"){
+            const students = document.getElementsByClassName("students")[0];
+            students.textContent = "";
+
+            const fragment = document.createDocumentFragment()
+
+            persons.forEach(item => {
+                fragment.appendChild(item.addNewStudent());
+            })
+
+            students.appendChild(fragment);
+        };
+
+        if (tipe === "Teachers"){
+            return;
+        }
     }
 }
 
 class Student extends Person {
-    constructor(name, age, grades = []){
-        super(name, age)
+    #passed = true;
+    #grades = [];
+
+    constructor(name, age, uid, grades = [], passed = true){
+        super(name, age);
+        this.uid = uid;
+        this.#grades = grades;
+        this.#passed = passed;
     }
+
+    set setStatus(passed){
+        this.#passed = passed;
+    }
+
+    addNewStudent(){
+        const students = document.getElementsByClassName("students")[0];
+        const template = document.getElementById("student-template");
+        const clone = template.content.firstElementChild.cloneNode(true);
+
+        clone.querySelector(".pass-fail h3 .name").textContent = this.name;
+        clone.querySelector("#age").textContent = this.age;
+        clone.querySelector("#grades").textContent += this.#grades.join(", ");
+
+        if (this.#passed){
+            clone.querySelector(".pass-fail h3 .passed").style.background = "#18AA25";
+            clone.querySelector(".pass-fail h3 .name").style.color = "#18AA25";
+
+        } else {
+            clone.querySelector(".pass-fail h3 .passed").style.background = "#c2271c";
+            clone.querySelector(".pass-fail h3 .name").style.color = "#c2271c";
+        }
+        clone.querySelector(".pass-fail h3 .passed").textContent = this.#passed ? "Passed": "Failed";
+
+        const buttonDelete = clone.querySelector(".delete-student");
+        buttonDelete.addEventListener("click", deleteStudent, false);
+        buttonDelete.id = this.uid;
+
+        const buttonPass = clone.querySelector(".pass");
+        buttonPass.id = this.uid;
+        buttonPass.addEventListener("click", passStudent, false);
+        buttonPass.disabled = this.#passed;
+
+        const buttonFail = clone.querySelector(".fail");
+        buttonFail.id = this.uid;
+        buttonFail.addEventListener("click", failStudent, false);
+        buttonFail.disabled = !this.#passed;
+
+        return clone;
+    }
+
 }
 
 window.addEventListener("load", loaded, false);

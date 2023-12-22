@@ -61,53 +61,56 @@
                 <h2>Students</h2>
                 <ul class="students">
 
-                    <template id="student-template">
-                        <li class="student-li">
-                            <div class="student">
-                                <div class="student-pass-fail-sub">
-                                    <div class="pass-fail">
-                                        <h3>Name</h3><p><span>Passed</span></p>
-                                    </div>
-                                    <p>Student</p>
-                                    <p id="grades">Grades: </p>
-                                    <p id="age">Age</p>
-                                </div>
-                                <div class="buttons">
-                                    <div class="pass-fail-buttons">
-                                        <button class="pass">Pass</button>
-                                        <button class="fail">Fail</button>
-                                    </div>
-                                    <div class="buttons-del-add">
-                                        <button class="delete-student">Delete</button>
-                                        <button class="add-grade">Add</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    </template>
-
                 </ul>
             </div>
 
             <div class="teachers-container">
                 <h2>Teachers</h2>
                 <ul class="teachers">
-                    <template id="teacher-template">
-                        <li class="teacher-li">
-                            <div class="teacher">
-                                <h3>Name</h3>
-                                <p>Teacher</p>
-                                <p id="area">Area</p>
-                                <p id="age">Age</p>
-                                <button class="delete-teacher">Delete</button>
-                            </div>
-                        </li>
-                    </template>
 
                 </ul>
             </div>
 
         </section>
     </main>
+
+    <template id="student-template">
+        <li class="student-li">
+            <div class="student">
+                <div class="student-pass-fail-sub">
+                    <div class="pass-fail">
+                        <h3><span class="name">Name</span><span class="passed">Passed</span></h3>
+                    </div>
+                    <p>Student</p>
+                    <p id="grades">Grades: </p>
+                    <p id="age">Age</p>
+                </div>
+                <div class="buttons">
+                    <div class="pass-fail-buttons">
+                        <button class="pass">Pass</button>
+                        <button class="fail">Fail</button>
+                    </div>
+                    <div class="buttons-del-add">
+                        <button class="delete-student">Delete</button>
+                        <button class="add-grade">Add</button>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </template>
+
+
+    <template id="teacher-template">
+        <li class="teacher-li">
+            <div class="teacher">
+                <h3>Name</h3>
+                <p>Teacher</p>
+                <p id="area">Area</p>
+                <p id="age">Age</p>
+                <button class="delete-teacher">Delete</button>
+            </div>
+        </li>
+    </template>
+
 </body>
 </html>

@@ -120,14 +120,14 @@ h2{
         flex-direction: row;
     }
 
-    .student h3{
+    .student h3 .name{
         font-family: "Montserrat" ,sans-serif;
         font-weight: 700;
         color: #18aa25;
         margin-top: 5px;
     }
 
-    .student span{
+    .student h3 .passed{
         font-family: "Montserrat" ,sans-serif;
         font-weight: 700;
         padding: 1px 10px;
