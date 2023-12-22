@@ -39,27 +39,11 @@ async function loaded(){
 async function addStudentToFront(role, name, age){
     const object = await addInDatabase(role.selectedIndex, name, age);
 
-    const students = document.getElementsByClassName("students")[0];
-    const template = document.getElementById("student-template");
-    const clone = template.content.firstElementChild.cloneNode(true);
+    const student = new Student(name, age, object.id);
 
-    clone.querySelector(".pass-fail h3").textContent = name;
-    clone.querySelector("#age").textContent = age;
+    students.push(student);
 
-    const buttonDelete = clone.querySelector(".delete-student");
-    buttonDelete.addEventListener("click", deleteStudent, false);
-    buttonDelete.id = object.id;
-
-    const buttonPass = clone.querySelector(".pass");
-    buttonPass.id = object.id;
-    buttonPass.addEventListener("click", passStudent, false);
-    buttonPass.disabled = true;
-
-    const buttonFail = clone.querySelector(".fail");
-    buttonFail.id = object.id;
-    buttonFail.addEventListener("click", failStudent, false);
-
-    students.appendChild(clone);
+    Person.showPersonUI(students, "Students");
 }
 
 async function addTeacherToFront(role, name, age){
@@ -90,7 +74,7 @@ async function addInDatabase(role, name, age, subject = "Math"){
             "name": name,
             "age": age,
             "grades": [],
-            "passed": "passed"
+            "passed": true
         }
 
         const response = await fetch("http://127.0.0.1:8000/students/v1/post-student", {
@@ -229,7 +213,7 @@ async function failStudent(buttonFail){
 
 }
 
-async function deleteInDatabase(role,buttonDelete) {
+async function deleteInDatabase(role, buttonDelete) {
     if(role === 0){
         await fetch(`http://127.0.0.1:8000/teachers/v1/delete_teacher?id=${buttonDelete.target.id}`, {
             method: "DELETE",
