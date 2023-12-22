@@ -155,21 +155,11 @@ const showData = () => {
 
     Person.showPersonUI(students, "Students");
 
-    /*teachers_data.forEach(element => {
-        const teachers = document.getElementsByClassName("teachers")[0];
-        const template = document.getElementById("teacher-template");
-        const clone = template.content.firstElementChild.cloneNode(true);
+    teachers_data.forEach(element => {
+        teachers.push(new Teacher(element.name, element.age, element.id, element.subject));
+    });
 
-        clone.querySelector(".teacher h3").textContent = element.name;
-        clone.querySelector(".teacher #area").textContent = element.subject;
-        clone.querySelector(".teacher #age").textContent = element.age;
-
-        const buttonDelete = clone.querySelector(".delete-teacher");
-        buttonDelete.addEventListener("click", deleteTeacher, false);
-        buttonDelete.id = element.id;
-
-        teachers.appendChild(clone);
-    })*/
+    Person.showPersonUI(teachers, "Teachers");
 }
 
 function deleteTeacher(buttonDelete){
@@ -279,7 +269,16 @@ class Person{
         };
 
         if (tipe === "Teachers"){
-            return;
+            const teachers = document.getElementsByClassName("teachers")[0];
+            teachers.textContent = "";
+
+            const fragment = document.createDocumentFragment();
+
+            persons.forEach(item => {
+                fragment.appendChild(item.addNewTeacher());
+            })
+
+            teachers.appendChild(fragment);
         }
     }
 }
@@ -300,7 +299,6 @@ class Student extends Person {
     }
 
     addNewStudent(){
-        const students = document.getElementsByClassName("students")[0];
         const template = document.getElementById("student-template");
         const clone = template.content.firstElementChild.cloneNode(true);
 
@@ -335,6 +333,28 @@ class Student extends Person {
         return clone;
     }
 
+}
+
+class Teacher extends Person {
+    constructor(name, age, uid, subject = ""){
+        super(name, age, uid);
+        this.subject = subject
+    }
+
+    addNewTeacher(){
+        const template = document.getElementById("teacher-template");
+        const clone = template.content.firstElementChild.cloneNode(true);
+
+        clone.querySelector(".teacher h3").textContent = this.name;
+        clone.querySelector(".teacher #area").textContent = this.subject;
+        clone.querySelector(".teacher #age").textContent = this.age;
+
+        const buttonDelete = clone.querySelector(".delete-teacher");
+        buttonDelete.addEventListener("click", deleteTeacher, false);
+        buttonDelete.id = this.uid;
+
+        return clone;
+    }
 }
 
 window.addEventListener("load", loaded, false);
