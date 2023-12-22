@@ -42,9 +42,9 @@ async def update_passed(student: Student_passed):
     del student_dict["id"]
     
     try:
-        return student_schema(db_client.students.find_one_and_update({"_id": ObjectId(student.id)},
+        return student_schema((db_client.students.find_one_and_update({"_id": ObjectId(student.dict(exclude_unset=True)["id"])},
                                         {"$set": student_dict},
-                                        return_document=ReturnDocument.AFTER))
+                                        return_document=ReturnDocument.AFTER)))
     except:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="student not found")
     

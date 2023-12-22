@@ -8,11 +8,11 @@ async function loaded(){
         const age = document.getElementById("age").value;
 
         if (role.selectedIndex === 1){
-            addStudentToDatabase(role, name, age)
+            addStudentToFront(role, name, age)
 
 
         } else {
-            addTeacherToDatabase(role, name, age)
+            addTeacherToFront(role, name, age)
 
         }
 
@@ -33,7 +33,7 @@ async function loaded(){
 
 }
 
-async function addStudentToDatabase(role, name, age){
+async function addStudentToFront(role, name, age){
     const object = await addInDatabase(role.selectedIndex, name, age);
 
     const students = document.getElementsByClassName("students")[0];
@@ -48,13 +48,18 @@ async function addStudentToDatabase(role, name, age){
     buttonDelete.id = object.id;
 
     const buttonPass = clone.querySelector(".pass");
-    buttonPass.addEventListener("click", passStudent, false);
     buttonPass.id = object.id;
+    buttonPass.addEventListener("click", passStudent, false);
+    buttonPass.disabled = true;
+
+    const buttonFail = clone.querySelector(".fail");
+    buttonFail.id = object.id;
+    buttonFail.addEventListener("click", failStudent, false);
 
     students.appendChild(clone);
 }
 
-async function addTeacherToDatabase(role, name, age){
+async function addTeacherToFront(role, name, age){
     const subject = document.getElementById("subject").value;
 
     const teachers = document.getElementsByClassName("teachers")[0];
@@ -155,9 +160,13 @@ const showData = () => {
         buttonDelete.id = element.id;
 
         const buttonPass = clone.querySelector(".pass");
-        buttonPass.addEventListener("click", (e) => {
-            return;
-        }, false);
+        buttonPass.id = element.id;
+        buttonPass.addEventListener("click", passStudent, false);
+        buttonPass.disabled = true;
+
+        const buttonFail = clone.querySelector(".fail");
+        buttonFail.id = element.id;
+        buttonFail.addEventListener("click", failStudent, false);
 
         students.appendChild(clone);
     });
@@ -193,8 +202,57 @@ function deleteStudent(buttonDelete){
     deleteInDatabase(1,buttonDelete)
 }
 
-function passStudent(buttonPass){
-    const id = buttonPass.id;
+async function passStudent(buttonPass){
+    const body_t = {
+        "id": buttonPass.target.id,
+        "passed": "passed"
+    }
+    await fetch("http://127.0.0.1:8000/students/v1/update-passed", {
+        method: "PATCH",
+        body: JSON.stringify(body_t),
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+
+    const parent = buttonPass.target.parentNode.parentNode.parentNode;
+    const span = parent.querySelector(".pass-fail p span");
+    const h3 = parent.querySelector("h3");
+    span.textContent = "Passed";
+    span.style.background = "#18AA25";
+    h3.style.color = "#18AA25";
+
+    buttonPass.target.disabled = true;
+
+    const buttonFail = parent.querySelector(".buttons .pass-fail-buttons .fail");
+    buttonFail.disabled = false;
+}
+
+async function failStudent(buttonFail){
+    const body_t = {
+        "id": buttonFail.target.id,
+        "passed": "failed"
+    };
+    await fetch("http://127.0.0.1:8000/students/v1/update-passed", {
+        method: "PATCH",
+        body: JSON.stringify(body_t),
+        headers: {
+            "Content-Type": "application/json",
+        }
+    });
+
+    const parent = buttonFail.target.parentNode.parentNode.parentNode;
+    const span = parent.querySelector(".pass-fail p span");
+    const h3 = parent.querySelector("h3");
+    span.textContent = "Failed";
+    span.style.background = "#c2271c";
+    h3.style.color = "#c2271c";
+
+    buttonFail.target.disabled = true;
+
+    const buttonPass = parent.querySelector(".buttons .pass-fail-buttons .pass");
+    buttonPass.disabled = false;
+
 }
 
 async function deleteInDatabase(role,buttonDelete) {
