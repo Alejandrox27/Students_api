@@ -11,8 +11,6 @@ async function loaded(){
         const data = new FormData(form);
         const [role, name, age, subject] = [...data.values()]
 
-        console.log(role)
-
         if (role === "student"){
             addStudentToFront(role, name, age)
         };
@@ -49,21 +47,13 @@ async function addStudentToFront(role, name, age){
 }
 
 async function addTeacherToFront(role, name, age, subject){
-    const teachers = document.getElementsByClassName("teachers")[0];
-    const template = document.getElementById("teacher-template");
-    const clone = template.content.firstElementChild.cloneNode(true);
-
     const object = await addInDatabase(role, name, age, subject);
 
-    clone.querySelector(".teacher h3").textContent = name;
-    clone.querySelector(".teacher #area").textContent = subject;
-    clone.querySelector(".teacher #age").textContent = age;
+    const teacher = new Teacher(name, age, object.id, subject);
 
-    const buttonDelete = clone.querySelector(".delete-teacher");
-    buttonDelete.addEventListener("click", deleteTeacher, false);
-    buttonDelete.id = object.id;
+    teachers.push(teacher);
 
-    teachers.appendChild(clone);
+    Person.showPersonUI(teachers, "Teachers")
 }
 
 async function addInDatabase(role, name, age, subject = "Math"){
