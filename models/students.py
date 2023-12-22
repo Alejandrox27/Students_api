@@ -5,7 +5,7 @@ class Student(BaseModel):
     name: str
     age: int
     grades: list[int]
-    passed: str
+    passed: bool
     
     
 class Student_grades(BaseModel):
@@ -14,4 +14,4 @@ class Student_grades(BaseModel):
     
 class Student_passed(BaseModel):
     id: str
-    passed: str
+    passed: bool
