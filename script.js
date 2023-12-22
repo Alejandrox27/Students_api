@@ -6,18 +6,20 @@ async function loaded(){
     document.getElementById("form").addEventListener("submit", (e) => {
         e.preventDefault()
 
-        const role = document.getElementById("select");
-        const name = document.getElementById("name").value;
-        const age = document.getElementById("age").value;
+        const form = document.getElementById("form");
 
-        if (role.selectedIndex === 1){
+        const data = new FormData(form);
+        const [role, name, age, subject] = [...data.values()]
+
+        console.log(role)
+
+        if (role === "student"){
             addStudentToFront(role, name, age)
+        };
 
-
-        } else {
-            addTeacherToFront(role, name, age)
-
-        }
+        if (role === "teacher") {
+            addTeacherToFront(role, name, age, subject)
+        };
 
     }, false);
 
@@ -37,7 +39,7 @@ async function loaded(){
 }
 
 async function addStudentToFront(role, name, age){
-    const object = await addInDatabase(role.selectedIndex, name, age);
+    const object = await addInDatabase(role, name, age);
 
     const student = new Student(name, age, object.id);
 
@@ -46,14 +48,12 @@ async function addStudentToFront(role, name, age){
     Person.showPersonUI(students, "Students");
 }
 
-async function addTeacherToFront(role, name, age){
-    const subject = document.getElementById("subject").value;
-
+async function addTeacherToFront(role, name, age, subject){
     const teachers = document.getElementsByClassName("teachers")[0];
     const template = document.getElementById("teacher-template");
     const clone = template.content.firstElementChild.cloneNode(true);
 
-    const object = await addInDatabase(role.selectedIndex, name, age, subject);
+    const object = await addInDatabase(role, name, age, subject);
 
     clone.querySelector(".teacher h3").textContent = name;
     clone.querySelector(".teacher #area").textContent = subject;
@@ -67,7 +67,7 @@ async function addTeacherToFront(role, name, age){
 }
 
 async function addInDatabase(role, name, age, subject = "Math"){
-    if (role === 1) {
+    if (role === "student") {
 
         const data = {
             "id": "",
@@ -92,7 +92,9 @@ async function addInDatabase(role, name, age, subject = "Math"){
     
     return responseData;
 
-    } else {
+    };
+     
+    if (role === "teacher"){
         const data = {
             "id": "",
             "name": name,
