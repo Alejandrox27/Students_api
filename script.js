@@ -152,28 +152,10 @@ function deleteStudent(buttonDelete){
     deleteInDatabase(1,buttonDelete)
 }
 
-async function passStudent(buttonPass){
+async function statusStudent(button){
     const body_t = {
-        "id": buttonPass.target.dataset.uid,
-        "passed": true
-    }
-    await fetch("http://127.0.0.1:8000/students/v1/update-passed", {
-        method: "PATCH",
-        body: JSON.stringify(body_t),
-        headers: {
-            "Content-Type": "application/json",
-        }
-    })
-    
-    const student = students.filter(item => item.uid === body_t.id);
-    student.setStatus = true;
-    Person.showPersonUI(students, "Students");
-}
-
-async function failStudent(buttonFail){
-    const body_t = {
-        "id": buttonFail.target.dataset.uid,
-        "passed": false
+        "id": button.target.dataset.uid,
+        "passed": button.target.dataset.passed === "true"
     };
     await fetch("http://127.0.0.1:8000/students/v1/update-passed", {
         method: "PATCH",
@@ -183,8 +165,11 @@ async function failStudent(buttonFail){
         }
     });
 
-    const student = students.filter(item => item.uid === body_t.id);
-    student.setStatus = false;
+    students.map(item => {
+        if (item.uid === body_t.id){
+            item.setStatus = button.target.dataset.passed === "true";
+        }
+    });
     Person.showPersonUI(students, "Students");
 
 }
@@ -282,12 +267,12 @@ class Student extends Person {
 
         const buttonPass = clone.querySelector(".pass");
         buttonPass.dataset.uid = this.uid;
-        buttonPass.addEventListener("click", passStudent, false);
+        buttonPass.addEventListener("click", statusStudent, false);
         buttonPass.disabled = this.#passed;
 
         const buttonFail = clone.querySelector(".fail");
         buttonFail.dataset.uid = this.uid;
-        buttonFail.addEventListener("click", failStudent, false);
+        buttonFail.addEventListener("click", statusStudent, false);
         buttonFail.disabled = !this.#passed;
 
         return clone;
