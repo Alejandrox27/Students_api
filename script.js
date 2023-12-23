@@ -6,10 +6,16 @@ async function loaded(){
     document.getElementById("form").addEventListener("submit", (e) => {
         e.preventDefault()
 
+        document.getElementsByClassName("alert")[0].classList.add("hide");
         const form = document.getElementById("form");
 
         const data = new FormData(form);
         const [role, name, age, subject] = [...data.values()]
+
+        if (!name.trim() || !age.trim()){
+            document.getElementsByClassName("alert")[0].classList.remove("hide");
+            return;
+        }
 
         if (role === "student"){
             addStudentToFront(role, name, age)

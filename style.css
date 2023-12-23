@@ -31,6 +31,23 @@ h2{
     margin: 0 5%;
 }
 
+.alert{
+    display: flex;
+    height: 70px;
+    width: 100%;
+    align-items: center;
+    border: 2px solid #e67777;
+    border-radius: 5px;
+    text-indent: 20px;
+    background: #f5c6c6;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.alert p{
+    color: #570e08;
+}
+
 #form{
     display: flex;
     flex-direction: column;
