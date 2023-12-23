@@ -220,7 +220,7 @@ async function deleteInDatabase(role, buttonDelete) {
 
         teachers.forEach((e,i) => {
             if (e.uid === buttonDelete.target.dataset.uid){
-                students.splice(i,1);
+                teachers.splice(i,1);
             }
         })
 
