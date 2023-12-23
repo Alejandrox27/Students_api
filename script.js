@@ -177,21 +177,21 @@ async function statusStudent(button){
 async function addGrades(id){
     let grade = "";
     let grades = [];
-    try{
-        grade = prompt("Insert a grade: ");
-        grade = parseFloat(grade);
+    
+    grade = prompt("Insert a grade: ");
+    grade = parseFloat(grade);
 
-        students.map(item => {
-            if (item.uid === id){
-                item.setGrade = grade;
-                grades = item.getGrades;
-            }
-        });
-
-    } catch {
-        console.log("error");
+    if (isNaN(grade)){
+        alert("The grade must be a number (can include decimals)")
         return;
     }
+
+    students.map(item => {
+        if (item.uid === id){
+            item.setGrade = grade;
+            grades = item.getGrades;
+        }
+    });
 
 
     await fetch("http://127.0.0.1:8000/students/v1/update-grades", {
