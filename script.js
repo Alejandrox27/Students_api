@@ -184,20 +184,39 @@ async function addGrades(id){
     let grade = "";
     let grades = [];
     
-    grade = prompt("Insert a grade: ");
-    grade = parseFloat(grade);
+    await Swal.fire({
+        title: "Insert a grade for the student",
+        input: "text",
+        inputAttributes: {
+          autocapitalize: "off"
+        },
+        showCancelButton: true,
+        confirmButtonText: "Confirm",
+        showLoaderOnConfirm: true,
+        preConfirm: async (grade) => {
+          try {
+            return parseFloat(grade);
+          } catch (error) {
+            Swal.showValidationMessage(`
+              failed: ${error}
+            `);
+          }
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+    }).then(res => grade = res);
 
-    if (isNaN(grade)){
-        alert("The grade must be a number (can include decimals)")
+    if (isNaN(grade.value) || grade.value === ""){
         return;
     }
 
     students.map(item => {
         if (item.uid === id){
-            item.setGrade = grade;
+            item.setGrade = grade.value;
             grades = item.getGrades;
         }
     });
+
+    console.log(grades);
 
 
     await fetch("http://127.0.0.1:8000/students/v1/update-grades", {
