@@ -168,9 +168,43 @@ async function statusStudent(button){
     students.map(item => {
         if (item.uid === body_t.id){
             item.setStatus = button.target.dataset.passed === "true";
-            item.setGrade = 5;
         }
     });
+    Person.showPersonUI(students, "Students");
+
+}
+
+async function addGrades(id){
+    let grade = "";
+    let grades = [];
+    try{
+        grade = prompt("Insert a grade: ");
+        grade = parseFloat(grade);
+
+        students.map(item => {
+            if (item.uid === id){
+                item.setGrade = grade;
+                grades = item.getGrades;
+            }
+        });
+
+    } catch {
+        console.log("error");
+        return;
+    }
+
+
+    await fetch("http://127.0.0.1:8000/students/v1/update-grades", {
+        method: "PATCH",
+        body: JSON.stringify({
+            "id": id,
+            "grades": grades
+        }),
+        headers: {
+            "Content-Type": "application/json",
+        }
+    });
+
     Person.showPersonUI(students, "Students");
 
 }
@@ -183,11 +217,24 @@ async function deleteInDatabase(role, buttonDelete) {
                 "Content-Type": "application/json",
             }
         })
+
+        teachers.forEach((e,i) => {
+            if (e.uid === buttonDelete.target.dataset.uid){
+                students.splice(i,1);
+            }
+        })
+
     } else if (role === 1){
         await fetch(`http://127.0.0.1:8000/students/v1/delete-student?id=${buttonDelete.target.dataset.uid}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
+            }
+        })
+
+        students.forEach((e,i) => {
+            if (e.uid === buttonDelete.target.dataset.uid){
+                students.splice(i,1);
             }
         })
     }
@@ -248,13 +295,22 @@ class Student extends Person {
         this.#grades.push(grade);
     }
 
+    get getGrades(){
+        return this.#grades;
+    }
+
     addNewStudent(){
+        let prom = ""
+        if (this.#grades.length != 0){
+            prom = (this.#grades.reduce((redx, item) => item + redx) / this.#grades.length).toFixed(2);
+        }
         const template = document.getElementById("student-template");
         const clone = template.content.firstElementChild.cloneNode(true);
 
         clone.querySelector(".pass-fail h3 .name").textContent = this.name;
         clone.querySelector(".age").textContent = this.age;
         clone.querySelector(".grades").textContent = "Grades: " + this.#grades.join(", ");
+        clone.querySelector(".prom").textContent = "PROM: " + prom;
 
         if (this.#passed){
             clone.querySelector(".pass-fail h3 .passed").style.background = "#18AA25";
@@ -279,6 +335,10 @@ class Student extends Person {
         buttonFail.dataset.uid = this.uid;
         buttonFail.addEventListener("click", statusStudent, false);
         buttonFail.disabled = !this.#passed;
+
+        const buttonAdd = clone.querySelector(".add-grade");
+        buttonAdd.dataset.uid = this.uid;
+        buttonAdd.addEventListener("click", () => {addGrades(this.uid)}, false);
 
         return clone;
     }
