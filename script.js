@@ -138,14 +138,14 @@ const showData = () => {
     Person.showPersonUI(teachers, "Teachers");
 }
 
-function deleteTeacher(buttonDelete){
+const deleteTeacher = (buttonDelete) => {
     const teacher = buttonDelete.target.parentNode.parentNode;
     teacher.parentNode.removeChild(teacher);
 
     deleteInDatabase(0, buttonDelete)
 }
 
-function deleteStudent(buttonDelete){
+const deleteStudent = (buttonDelete) => {
     const student = buttonDelete.target.parentNode.parentNode.parentNode.parentNode;
     student.parentNode.removeChild(student);
 
@@ -168,6 +168,7 @@ async function statusStudent(button){
     students.map(item => {
         if (item.uid === body_t.id){
             item.setStatus = button.target.dataset.passed === "true";
+            item.setGrade = 5;
         }
     });
     Person.showPersonUI(students, "Students");
@@ -243,13 +244,17 @@ class Student extends Person {
         this.#passed = passed;
     }
 
+    set setGrade(grade){
+        this.#grades.push(grade);
+    }
+
     addNewStudent(){
         const template = document.getElementById("student-template");
         const clone = template.content.firstElementChild.cloneNode(true);
 
         clone.querySelector(".pass-fail h3 .name").textContent = this.name;
-        clone.querySelector("#age").textContent = this.age;
-        clone.querySelector("#grades").textContent += this.#grades.join(", ");
+        clone.querySelector(".age").textContent = this.age;
+        clone.querySelector(".grades").textContent = "Grades: " + this.#grades.join(", ");
 
         if (this.#passed){
             clone.querySelector(".pass-fail h3 .passed").style.background = "#18AA25";
